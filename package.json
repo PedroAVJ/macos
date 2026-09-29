@@ -1,6 +1,6 @@
 {
   "name": "@pedroavj/macos",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Operate the Mac's own apps and system: Calendar, Contacts, iCloud Drive, Messages, Notes, Reminders, Voice Memos, Passwords, memory and storage checks, and the Mac-login credential broker.",
   "license": "MIT",

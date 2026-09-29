@@ -497,7 +497,7 @@ So this plugin splits them, and each skill says which one it answered.
 | --- | --- |
 | `memory` | What are current RAM pressure, swap, and process-owner measurements? |
 | `storage` | What is current APFS headroom and the exact shortfall to the free-space target? |
-| `control-host` | What macOS, architecture, ADB, and scrcpy setup is available right now? |
+| `control-host` | What macOS, architecture, ADB, and scrcpy setup is available right now, and what restrictions apply before using iPhone Mirroring? |
 | `credential-authorization` | Can a native signed macOS prompt receive one approved Mac login password fill without exposing the secret to the agent? |
 
 The macOS plugin owns live host measurement, not cleanup eligibility. Both diagnostic

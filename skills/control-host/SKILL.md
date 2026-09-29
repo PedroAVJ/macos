@@ -1,6 +1,6 @@
 ---
 name: control-host
-description: Inspect the current macOS control-host setup, including macOS, architecture, ADB, and scrcpy. Use when checking whether this Mac can control or inspect another device, or when comparing the live setup with the user's prior Mac host baseline.
+description: Inspect the current macOS control-host setup, including macOS, architecture, ADB, and scrcpy. Use when checking whether this Mac can control or inspect another device, when comparing the live setup with the user's prior Mac host baseline, or before using iPhone Mirroring.
 ---
 
 # Mac Control Host
@@ -24,6 +24,11 @@ scrcpy --version
 
 If comparison with a user-provided prior setup is useful, read
 `../../context/mac-control-host.md` after collecting the live result.
+
+## iPhone Mirroring
+
+Never use iPhone Mirroring while the user is connected through iPhone Remote
+Control. Do not use iPhone Mirroring to retrieve authentication codes.
 
 ## Boundaries
 
