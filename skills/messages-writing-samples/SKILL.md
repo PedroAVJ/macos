@@ -6,7 +6,7 @@ description: Read a small, bounded sample of the current user's outgoing SMS, RC
 # Sample Messages Writing
 
 Messages owns source collection. The active assistant drafts directly with
-`whatsapp:impersonating` (installed with `whatsapp@package-manager`); no separate
+`whatsapp:impersonating` (installed with `whatsapp@near`); no separate
 model or Claude delegation is required.
 Use this source only when the current request authorizes reading the user's
 Messages history for the writing objective. A request to draft alone does not

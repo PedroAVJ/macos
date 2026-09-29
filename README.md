@@ -118,11 +118,11 @@ the destination visible.
 ## Install
 
 ```bash
-claude plugin install macos@package-manager
+claude plugin install macos@near
 ```
 
 ```bash
-codex plugin add macos@package-manager
+codex plugin add macos@near
 ```
 
 ## messages
@@ -263,8 +263,8 @@ summarizes, or acts on a conversation in the background.
 ## Install
 
 ```bash
-codex plugin add macos@package-manager
-claude plugin install macos@package-manager
+codex plugin add macos@near
+claude plugin install macos@near
 ```
 
 Version 0.6.1 replaces the former Python/account-AppleScript writer with the
@@ -453,7 +453,7 @@ Use saved credentials without exposing them to the assistant.
 | `autofill` | Fill saved logins in Chrome through the official iCloud Passwords extension. Website verification follows the normal authorized login workflow. |
 | `credential-authorization` | Fill the Mac login password once, after human approval, into a signed native secure dialog through the bundled `macbook-credential-broker` MCP server. |
 
-Install `macos@package-manager` in Codex or Claude. Run `npm test` to validate the package.
+Install `macos@near` in Codex or Claude. Run `npm test` to validate the package.
 
 ## Credential broker
 
@@ -565,12 +565,12 @@ Mac's normal workload.
 ## Install
 
 ```bash
-claude plugin install macos@package-manager
+claude plugin install macos@near
 ```
 
 ```bash
-codex plugin add macos@package-manager
+codex plugin add macos@near
 ```
 
-Claude installs `elevenlabs@package-manager` (the `elevenlabs` transcription CLI)
-and `near@package-manager` as dependencies.
+Claude installs `elevenlabs@near` (the `elevenlabs` transcription CLI)
+and `near@near` as dependencies.

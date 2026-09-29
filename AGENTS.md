@@ -75,7 +75,7 @@ Keep every durable runtime identity unchanged: CLI names (`contacts`, `messages`
 
 ## apple-passwords
 
-- This repository owns the public `apple-passwords` plugin, installed as `macos@package-manager`.
+- This repository owns the public `apple-passwords` plugin, installed as `macos@near`.
 - Keep Codex and Claude plugin manifests and package version synchronized.
 - Keep account identifiers, device addresses, pairing tokens, credentials, and private host observations outside Git.
 - Runtime paths must resolve within the package or through explicitly configured external services. Never reference a developer's task folder or installed cache as source.

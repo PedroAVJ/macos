@@ -26,11 +26,11 @@ test("manifests agree and keep both MCP servers", () => {
 });
 
 test("depends only on live catalog plugins and references no retired owners", () => {
-  assert.deepEqual(json(".claude-plugin/plugin.json").dependencies, ["elevenlabs@package-manager", "near@package-manager"]);
+  assert.deepEqual(json(".claude-plugin/plugin.json").dependencies, ["elevenlabs@near", "near@near"]);
   assert.ok(existsSync(new URL("../references/cleanup-eligibility.md", import.meta.url)));
   for (const s of skills) {
     const md = readFileSync(new URL(`../skills/${s}/SKILL.md`, import.meta.url), "utf8");
-    assert.doesNotMatch(md, /toolchain[:@]|writing:impersonating|models@package-manager/, s);
+    assert.doesNotMatch(md, /toolchain[:@]|writing:impersonating|models@near/, s);
   }
   assert.doesNotMatch(readFileSync(new URL("../README.md", import.meta.url), "utf8"), /toolchain[:@]|writing:impersonating/);
 });
