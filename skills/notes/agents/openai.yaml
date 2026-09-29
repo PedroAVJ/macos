@@ -1,0 +1,4 @@
+interface:
+  display_name: "Notes"
+  short_description: "Create, edit, and read Apple Notes"
+  default_prompt: "Use $notes to manage Apple Notes through the correct Codex or Claude UI path, or resolve exact call evidence."

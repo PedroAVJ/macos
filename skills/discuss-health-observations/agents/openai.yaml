@@ -1,0 +1,4 @@
+interface:
+  display_name: "Discuss Health Observations"
+  short_description: "Discuss health observations from Voice Memos"
+  default_prompt: "Use $discuss-health-observations to discuss health observations from my newly cached Voice Memos."

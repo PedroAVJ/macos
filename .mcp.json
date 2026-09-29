@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "macbook-credential-broker": {
+      "type": "stdio",
+      "command": "/bin/sh",
+      "args": [
+        "-c",
+        "root=$CLAUDE_PLUGIN_ROOT; if [ -z \"$root\" ]; then root=.; fi; exec \"$root/scripts/launch-credential-broker-mcp\""
+      ],
+      "cwd": "."
+    },
+    "apple-notes": {
+      "type": "stdio",
+      "command": "/bin/sh",
+      "args": [
+        "-c",
+        "root=$CLAUDE_PLUGIN_ROOT; if [ -z \"$root\" ]; then root=.; fi; exec \"$root/scripts/launch-apple-notes-mcp\""
+      ],
+      "cwd": "."
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Messages Hygiene"
+  short_description: "Review SMS, RCS, and iMessage spam safely"
+  default_prompt: "Use $messages-inbox-hygiene to review recent Messages for block or report candidates without changing chats."

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Credential Authorization"
+  short_description: "Approve one native Mac login password fill"
+  default_prompt: "Use $credential-authorization to fill my Mac password into this native prompt."
+policy:
+  allow_implicit_invocation: true

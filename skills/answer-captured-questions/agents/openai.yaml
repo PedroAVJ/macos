@@ -1,0 +1,4 @@
+interface:
+  display_name: "Answer Captured Questions"
+  short_description: "Answer genuine questions from new Voice Memos"
+  default_prompt: "Use $answer-captured-questions to answer genuine questions from newly cached Voice Memos."

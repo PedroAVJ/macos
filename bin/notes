@@ -1,0 +1,76 @@
+#!/bin/sh
+set -eu
+
+script="$0"
+while [ -L "$script" ]; do
+  dir="$(CDPATH= cd -- "$(dirname -- "$script")" && pwd)"
+  link="$(readlink "$script")"
+  case "$link" in
+    /*) script="$link" ;;
+    *) script="$dir/$link" ;;
+  esac
+done
+
+plugin_root="$(CDPATH= cd -- "$(dirname -- "$script")/.." && pwd)"
+
+usage() {
+  cat <<'USAGE'
+Usage: notes <area> <command> [options]
+
+Commands:
+  create      Create an ordinary Apple Note through the Notes UI
+  checklist   Create native interactive Apple Notes checklists
+  calls       Read Apple call recordings and their transcript cache
+
+Call commands:
+  list        List Apple call recordings from the macOS Notes store
+  path        Print the absolute audio path for a call
+  transcript  Print Apple's transcript from the call note, if any
+  transcriptions  Maintain the on-demand source-local transcript cache
+  doctor      Check store access and report audio belonging to no call
+
+Run "notes create --help", "notes checklist create --help", or
+"notes calls <command> --help" for options.
+The write commands use Notes.app and System Events directly without Python or
+the Notes scripting dictionary. Reading the Notes database requires Full Disk
+Access.
+USAGE
+}
+
+scope="${1:-}"
+case "$scope" in
+  create | checklist)
+    exec node "$plugin_root/scripts/write_notes.mjs" "$@"
+    ;;
+  calls)
+    shift
+    ;;
+  help | -h | --help | "")
+    usage
+    exit 0
+    ;;
+  *)
+    printf 'notes: unknown area "%s"\n\n' "$scope" >&2
+    usage >&2
+    exit 2
+    ;;
+esac
+
+command="${1:-}"
+case "$command" in
+  list | path | transcript | doctor)
+    exec python3 "$plugin_root/scripts/notes.py" "$@"
+    ;;
+  transcriptions)
+    shift
+    exec python3 "$plugin_root/scripts/notes_transcription_worker.py" "$@"
+    ;;
+  help | -h | --help | "")
+    usage
+    ;;
+  *)
+    printf 'notes calls: unknown command "%s"\n\n' "$command" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

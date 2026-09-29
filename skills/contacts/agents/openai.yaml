@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apple Contacts"
+  short_description: "Manage live Apple Contacts on macOS"
+  default_prompt: "Use $contacts to find or update a contact safely."

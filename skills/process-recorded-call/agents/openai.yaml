@@ -1,0 +1,4 @@
+interface:
+  display_name: "Process Recorded Call"
+  short_description: "Transcribe and complete recorded calls"
+  default_prompt: "Use $process-recorded-call to process these exact Apple call-recording IDs in this task."

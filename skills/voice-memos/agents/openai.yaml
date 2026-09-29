@@ -1,0 +1,4 @@
+interface:
+  display_name: "Voice Memos"
+  short_description: "Process new Voice Memos end to end"
+  default_prompt: "Use $voice-memos to process new recordings completely."

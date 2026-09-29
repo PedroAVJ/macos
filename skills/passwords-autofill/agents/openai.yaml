@@ -1,0 +1,6 @@
+interface:
+  display_name: "Autofill"
+  short_description: "Use saved credentials safely in Chrome"
+  default_prompt: "Use $passwords-autofill to fill this login with Apple Passwords."
+policy:
+  allow_implicit_invocation: true

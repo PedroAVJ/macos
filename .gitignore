@@ -1,0 +1,12 @@
+!.env.example
+*.log
+*.py[cod]
+*.pyc
+.DS_Store
+.env
+.env.*
+.venv/
+DerivedData/
+Icon?
+__pycache__/
+node_modules/

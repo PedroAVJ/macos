@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apple Reminders"
+  short_description: "Manage reminders, tags, and Smart Lists"
+  default_prompt: "Use $reminders to manage this Apple Reminders request through direct APIs or deterministic AppleScript UI scripting."

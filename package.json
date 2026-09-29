@@ -1,0 +1,14 @@
+{
+  "name": "@pedroavj/macos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Operate the Mac's own apps and system: Calendar, Contacts, iCloud Drive, Messages, Notes, Reminders, Voice Memos, Passwords, memory and storage checks, and the Mac-login credential broker.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PedroAVJ/macos.git"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs && PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p '*test_*.py'"
+  }
+}

@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""Guarded access to the user's local iCloud Drive filesystem."""
+
+from __future__ import annotations
+
+import argparse
+import filecmp
+import hashlib
+import os
+from pathlib import Path
+import shutil
+import sys
+import tempfile
+
+
+DEFAULT_ROOT = Path.home() / "Library" / "Mobile Documents" / "com~apple~CloudDocs"
+LIST_LIMIT = 200
+
+
+class UsageError(Exception):
+    pass
+
+
+def drive_root() -> Path:
+    configured = os.environ.get("ICLOUD_DRIVE_ROOT")
+    root = Path(configured).expanduser() if configured else DEFAULT_ROOT
+    try:
+        resolved = root.resolve(strict=True)
+    except FileNotFoundError as exc:
+        raise UsageError(f"iCloud Drive root does not exist: {root}") from exc
+    if not resolved.is_dir():
+        raise UsageError(f"iCloud Drive root is not a directory: {resolved}")
+    return resolved
+
+
+def relative_path(raw: str, *, allow_root: bool = True) -> Path:
+    path = Path(raw)
+    if path.is_absolute() or ".." in path.parts:
+        raise UsageError("path must be relative to iCloud Drive and cannot contain '..'")
+    cleaned = Path(*(part for part in path.parts if part not in ("", ".")))
+    if str(cleaned) == "." and not allow_root:
+        raise UsageError("destination must name a file")
+    return cleaned
+
+
+def within(root: Path, candidate: Path) -> bool:
+    return candidate == root or root in candidate.parents
+
+
+def target(root: Path, raw: str, *, must_exist: bool, allow_root: bool = True) -> Path:
+    rel = relative_path(raw, allow_root=allow_root)
+    try:
+        resolved = (root / rel).resolve(strict=must_exist)
+    except FileNotFoundError as exc:
+        raise UsageError(f"path does not exist in iCloud Drive: {raw}") from exc
+    if not within(root, resolved):
+        raise UsageError("path escapes iCloud Drive")
+    return resolved
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def copy_file(root: Path, source_raw: str, destination_raw: str) -> None:
+    source_input = Path(source_raw).expanduser()
+    if source_input.is_symlink():
+        raise UsageError("source must not be a symlink")
+    try:
+        source = source_input.resolve(strict=True)
+    except FileNotFoundError as exc:
+        raise UsageError(f"source does not exist: {source_input}") from exc
+    if not source.is_file():
+        raise UsageError("source must be a regular file")
+
+    rel = relative_path(destination_raw, allow_root=False)
+    unresolved = root / rel
+    parent = unresolved.parent.resolve(strict=False)
+    if not within(root, parent):
+        raise UsageError("destination escapes iCloud Drive")
+    parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    parent = parent.resolve(strict=True)
+    if not within(root, parent):
+        raise UsageError("destination parent escapes iCloud Drive")
+    destination = parent / unresolved.name
+
+    if destination.is_symlink():
+        raise UsageError("destination must not be a symlink")
+    if destination.exists():
+        if destination.is_file() and filecmp.cmp(source, destination, shallow=False):
+            print(f"verified existing: {destination}")
+            return
+        raise UsageError(f"destination already exists with different contents: {destination}")
+
+    old_umask = os.umask(0o077)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            dir=parent,
+            prefix=f".{destination.name}.partial-",
+            delete=False,
+        ) as output, source.open("rb") as input_file:
+            temporary = Path(output.name)
+            shutil.copyfileobj(input_file, output)
+            output.flush()
+            os.fsync(output.fileno())
+        temporary.chmod(0o600)
+        if not filecmp.cmp(source, temporary, shallow=False):
+            raise UsageError("byte verification failed after copy")
+        try:
+            os.link(temporary, destination)
+        except FileExistsError:
+            if destination.is_file() and filecmp.cmp(source, destination, shallow=False):
+                print(f"verified existing: {destination}")
+                return
+            raise UsageError(f"destination appeared during copy: {destination}")
+        if not filecmp.cmp(source, destination, shallow=False):
+            destination.unlink(missing_ok=True)
+            raise UsageError("byte verification failed at destination")
+        print(f"copied and verified: {destination}")
+    finally:
+        os.umask(old_umask)
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def parser() -> argparse.ArgumentParser:
+    result = argparse.ArgumentParser(prog="icloud-drive")
+    commands = result.add_subparsers(dest="command", required=True)
+    commands.add_parser("root")
+    list_parser = commands.add_parser("list")
+    list_parser.add_argument("path", nargs="?", default=".")
+    status_parser = commands.add_parser("status")
+    status_parser.add_argument("path")
+    checksum_parser = commands.add_parser("checksum")
+    checksum_parser.add_argument("path")
+    copy_parser = commands.add_parser("copy-file")
+    copy_parser.add_argument("source")
+    copy_parser.add_argument("destination")
+    return result
+
+
+def main() -> int:
+    args = parser().parse_args()
+    try:
+        root = drive_root()
+        if args.command == "root":
+            print(root)
+        elif args.command == "list":
+            directory = target(root, args.path, must_exist=True)
+            if not directory.is_dir():
+                raise UsageError("list path must be a directory")
+            entries = sorted(directory.iterdir(), key=lambda item: item.name.casefold())
+            for entry in entries[:LIST_LIMIT]:
+                suffix = "/" if entry.is_dir() else ""
+                print(f"{entry.name}{suffix}")
+            if len(entries) > LIST_LIMIT:
+                print(f"... {len(entries) - LIST_LIMIT} more entries", file=sys.stderr)
+        elif args.command == "status":
+            path = target(root, args.path, must_exist=True)
+            kind = "directory" if path.is_dir() else "file" if path.is_file() else "other"
+            print(f"local path: {path}")
+            print(f"type: {kind}")
+            if path.is_file():
+                print(f"bytes: {path.stat().st_size}")
+            print("remote sync: not established by this command")
+        elif args.command == "checksum":
+            path = target(root, args.path, must_exist=True)
+            if not path.is_file() or path.is_symlink():
+                raise UsageError("checksum path must be a regular, non-symlink file")
+            print(f"{sha256(path)}  {args.path}")
+        elif args.command == "copy-file":
+            copy_file(root, args.source, args.destination)
+        return 0
+    except UsageError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

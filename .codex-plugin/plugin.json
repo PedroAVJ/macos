@@ -1,0 +1,47 @@
+{
+  "name": "macos",
+  "version": "0.1.0",
+  "description": "Operate the Mac's own apps and system: Calendar, Contacts, iCloud Drive, Messages, Notes, Reminders, Voice Memos, Passwords, memory and storage checks, and the Mac-login credential broker.",
+  "author": {
+    "name": "PedroAVJ",
+    "url": "https://github.com/PedroAVJ"
+  },
+  "homepage": "https://github.com/PedroAVJ/macos",
+  "repository": "https://github.com/PedroAVJ/macos",
+  "license": "MIT",
+  "keywords": [
+    "macos",
+    "apple",
+    "calendar",
+    "contacts",
+    "icloud",
+    "messages",
+    "notes",
+    "reminders",
+    "voice-memos",
+    "passwords"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "macOS",
+    "shortDescription": "Mac apps, files, credentials and system checks",
+    "longDescription": "Operate the Mac's own apps and system: Calendar, Contacts, iCloud Drive, Messages, Notes, Reminders, Voice Memos, Passwords, memory and storage checks, and the Mac-login credential broker.",
+    "developerName": "PedroAVJ",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "brandColor": "#0A84FF",
+    "composerIcon": "./assets/macos.svg",
+    "logo": "./assets/macos.svg",
+    "screenshots": [],
+    "defaultPrompt": [
+      "Add this to my Reminders",
+      "Find this contact",
+      "Process my new Voice Memos"
+    ]
+  }
+}

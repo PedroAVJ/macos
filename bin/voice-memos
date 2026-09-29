@@ -1,0 +1,53 @@
+#!/bin/sh
+set -eu
+
+script="$0"
+while [ -L "$script" ]; do
+  dir="$(CDPATH= cd -- "$(dirname -- "$script")" && pwd)"
+  link="$(readlink "$script")"
+  case "$link" in
+    /*) script="$link" ;;
+    *) script="$dir/$link" ;;
+  esac
+done
+
+plugin_root="$(CDPATH= cd -- "$(dirname -- "$script")/.." && pwd)"
+
+usage() {
+  cat <<'USAGE'
+Usage: voice-memos <command> [options]
+
+Commands:
+  list        List recordings from the macOS Voice Memos store
+  transcript  Print Apple's embedded on-device transcript for a recording
+  path        Print the absolute audio path for a recording
+  transcriptions  Maintain the on-demand source-local transcript cache
+  questions   Read completed transcripts for the question-answering skill
+  health-observations  Read completed transcripts for the health-recording skill
+
+Run "voice-memos <command> --help" for options.
+Requires Full Disk Access to read the Voice Memos database.
+USAGE
+}
+
+command="${1:-}"
+case "$command" in
+  list | transcript | path)
+    exec python3 "$plugin_root/scripts/voice_memos.py" "$@"
+    ;;
+  transcriptions)
+    shift
+    exec python3 "$plugin_root/scripts/voice_memos_transcription_worker.py" "$@"
+    ;;
+  questions | health-observations)
+    exec python3 "$plugin_root/scripts/scheduled_workflows.py" "$@"
+    ;;
+  help | -h | --help | "")
+    usage
+    ;;
+  *)
+    printf 'voice-memos: unknown command "%s"\n\n' "$command" >&2
+    usage >&2
+    exit 2
+    ;;
+esac
