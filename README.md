@@ -175,7 +175,7 @@ more candidates inside that exact window.
 Messages account direction is not proof of human authorship. The output says so
 explicitly; exclude known assistant-authored or copied text before using it as
 writing evidence. `macos:messages-writing-samples` describes safe source collection
-for `writing:impersonating`. The active assistant drafts directly. The hygiene
+for `whatsapp:impersonating`. The active assistant drafts directly. The hygiene
 `scan` remains incoming-only and contains no message text.
 
 ## notes
@@ -501,15 +501,15 @@ So this plugin splits them, and each skill says which one it answered.
 | `credential-authorization` | Can a native signed macOS prompt receive one approved Mac login password fill without exposing the secret to the agent? |
 
 The macOS plugin owns live host measurement, not cleanup eligibility. Both diagnostic
-skills compose `toolchain:resource-hygiene`, which owns whether any measured
-file, application, or process may appear in a cleanup recommendation.
+skills apply `references/cleanup-eligibility.md`, which decides whether any
+measured file, application, or process may appear in a cleanup recommendation.
 
 Unless the user chooses another threshold, storage cleanup plans target 20%
 free capacity. That percentage is the literal measurement target, with no
 safety buffer, and any separately authorized cleanup verifies the actual result
 with `df`.
 
-Storage answers return the target line plus only Toolchain-qualified candidates.
+Storage answers return the target line plus only gate-qualified candidates.
 If none qualify, they say so even when the target remains unmet. Logical sizes
 remain projections until physical APFS reclaim is verified with `df`.
 
@@ -558,18 +558,19 @@ measured hardware beside the verdict. Operator host baselines belong in private 
 measures the live Mac first and compares prior measurements only when supplied.
 
 Memory diagnosis uses the kernel's categorical pressure level to establish
-urgency and aggregates current process-owner trees. Toolchain applies the
-cleanup eligibility decision. Level 0 is not an optimization target for this
+urgency and aggregates current process-owner trees. The cleanup eligibility
+gates decide candidates. Level 0 is not an optimization target for this
 Mac's normal workload.
 
 ## Install
 
 ```bash
-claude plugin install toolchain@package-manager
 claude plugin install macos@package-manager
 ```
 
 ```bash
-codex plugin add toolchain@package-manager
 codex plugin add macos@package-manager
 ```
+
+Claude installs `elevenlabs@package-manager` (the `elevenlabs` transcription CLI)
+and `near@package-manager` as dependencies.

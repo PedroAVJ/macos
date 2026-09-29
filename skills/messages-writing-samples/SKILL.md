@@ -1,12 +1,13 @@
 ---
 name: messages-writing-samples
-description: Read a small, bounded sample of the current user's outgoing SMS, RCS, or iMessage text for explicitly requested writing analysis or a draft grounded in their Messages history. Use the read-only messages samples command, preserve source and authorship uncertainty, and pass only relevant safe evidence to writing:impersonating.
+description: Read a small, bounded sample of the current user's outgoing SMS, RCS, or iMessage text for explicitly requested writing analysis or a draft grounded in their Messages history. Use the read-only messages samples command, preserve source and authorship uncertainty, and pass only relevant safe evidence to whatsapp:impersonating.
 ---
 
 # Sample Messages Writing
 
 Messages owns source collection. The active assistant drafts directly with
-`writing:impersonating`; no separate model or Claude delegation is required.
+`whatsapp:impersonating` (installed with `whatsapp@package-manager`); no separate
+model or Claude delegation is required.
 Use this source only when the current request authorizes reading the user's
 Messages history for the writing objective. A request to draft alone does not
 permit sending a message or inspecting unrelated conversations.
@@ -46,7 +47,7 @@ persist a personal style corpus, or add samples to this plugin or Git.
 
 ## Draft and report the limit
 
-Use `writing:impersonating` with the current request, immediate reply context,
+Use `whatsapp:impersonating` with the current request, immediate reply context,
 a compact summary of repeated patterns, and selected safe examples. The target
 chat has greater weight than a global baseline. Sparse evidence is a limitation,
 not a reason to invent stylistic certainty. If database access or body decoding

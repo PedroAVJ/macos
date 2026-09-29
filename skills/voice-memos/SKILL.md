@@ -57,9 +57,8 @@ own bounded source-time window under that skill's authority.
   `macos:discuss-health-observations` in exact-direct mode. That workflow
   discusses first and files the discussion-refined result to the medical record
   only after the user has engaged in the thread.
-- A uniquely resolved meeting or work session may use
-  `toolchain:elicitation` and then `toolchain:analysis` when their own entry
-  conditions hold.
+- A uniquely resolved meeting or work session may yield grounded requirements
+  and owner-attributed action items in this task when the user requests them.
 
 Do not inspect unrelated memos, infer a destination, create generic tasks, send
 messages, or treat transcription as a completed semantic outcome. Recurring

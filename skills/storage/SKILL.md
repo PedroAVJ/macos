@@ -5,10 +5,11 @@ description: Measure current Mac APFS headroom and the exact shortfall to a sele
 
 # Mac Storage
 
-Own the live macOS and APFS measurement. Apply `toolchain:resource-hygiene` to
-decide whether any measured item may be recommended for removal. Do not define
-or weaken cleanup eligibility in this skill. If Toolchain is unavailable,
-report the target and shortfall without inventing candidates.
+Own the live macOS and APFS measurement. Apply the plugin's
+[cleanup eligibility gates](../../references/cleanup-eligibility.md) to decide
+whether any measured item may be recommended for removal. Do not weaken those
+gates in this skill. When nothing passes them, report the target and shortfall
+without inventing candidates.
 
 Start read-only. A diagnostic or recommendation request is not deletion
 authorization.
@@ -39,11 +40,11 @@ removal is needed. Below it, report the exact shortfall.
 
 ## Candidate measurement
 
-Give the target, shortfall, and live ownership context to
-`toolchain:resource-hygiene` before measuring removal candidates. It owns the
+Apply the cleanup eligibility gates to the target, shortfall, and live
+ownership context before measuring removal candidates. They own the
 candidate/no-candidate decision. Measure only exact targets that have passed
-Toolchain's ownership and relevance gates, then return the measured size for its
-materiality decision. Do not broaden the scan merely to make the arithmetic work.
+the ownership and relevance gates, then apply the materiality gate to the
+measured size. Do not broaden the scan merely to make the arithmetic work.
 
 For an exact target that passed those initial gates, use the narrowest applicable
 read-only checks:
@@ -54,8 +55,9 @@ lsof +D <exact-qualified-target>
 ```
 
 When Git ownership is relevant, also inspect the repository's status, branches,
-worktrees, remote publication, and task ownership. Return that evidence to
-Toolchain rather than inferring disposability from size or regeneration alone.
+worktrees, remote publication, and task ownership. Apply the eligibility
+gates to that evidence rather than inferring disposability from size or
+regeneration alone.
 
 Logical `du` size is only a projection. After separately authorized removal,
 re-read `df -Pk /System/Volumes/Data` after each material exact target and stop
@@ -63,7 +65,7 @@ when the selected percentage is physically reached.
 
 ## Answer
 
-Return only the target line and Toolchain-qualified actions:
+Return only the target line and gate-qualified actions:
 
 ```text
 Storage target: <current free> -> <target free> (<percentage>); need <shortfall>

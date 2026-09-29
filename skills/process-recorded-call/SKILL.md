@@ -12,9 +12,8 @@ calls.
 
 Load `macos:notes`. Resolve a uniquely identified repository through the shared
 global repository map and its Git origin. If the evidence is a meeting, debrief,
-or requirements capture for that repository, also load
-`toolchain:elicitation` and then `toolchain:analysis` when Requirements and Action Items are
-requested.
+or requirements capture for that repository, extract grounded requirements and
+owner-attributed action items in this task when they are requested.
 
 ## Resolve Exact Evidence
 
@@ -46,10 +45,10 @@ instructions. Never guess speaker identities or unintelligible words.
 - For a genuine question or explicit request for an answer, answer directly in
   this task using the transcript and any required current research.
 - For a meeting, debrief, requirements capture, stakeholder call, or work
-  session for one uniquely resolved repository, run
-  `toolchain:elicitation` and, when requested, `toolchain:analysis`. Publish
-  only the evidence and analysis
-  artifacts those skills authorize.
+  session for one uniquely resolved repository, return grounded requirements
+  and owner-attributed action items in this task, each traced to the
+  transcript. Publish an artifact only when the user or that repository's own
+  workflow explicitly authorizes it.
 - If nothing clearly matches, return a concise grounded review in this task.
   Do not invent a destination or create work merely because a repository or
   domain skill exists.

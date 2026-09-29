@@ -1,6 +1,6 @@
 {
   "name": "macos",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Operate the Mac's own apps and system: Calendar, Contacts, iCloud Drive, Messages, Notes, Reminders, Voice Memos, Passwords, memory and storage checks, and the Mac-login credential broker.",
   "author": {
     "name": "PedroAVJ",
@@ -24,8 +24,7 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "dependencies": [
-    "toolchain@package-manager",
-    "models@package-manager",
+    "elevenlabs@package-manager",
     "near@package-manager"
   ]
 }

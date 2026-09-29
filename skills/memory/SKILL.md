@@ -5,10 +5,11 @@ description: Measure current Mac RAM pressure, swap, compression, and process-ow
 
 # Mac Memory
 
-Own the live macOS measurement. Apply `toolchain:resource-hygiene` to decide
-whether any measured process may be recommended for stopping. Do not define or
-weaken cleanup eligibility in this skill. If Toolchain is unavailable, report
-the measurements without inventing candidates.
+Own the live macOS measurement. Apply the plugin's
+[cleanup eligibility gates](../../references/cleanup-eligibility.md) to decide
+whether any measured process may be recommended for stopping. Do not weaken
+those gates in this skill. When no process passes them, report the measurements
+without inventing candidates.
 
 Start read-only. A diagnostic request does not authorize quitting, restarting,
 or killing anything.
@@ -57,9 +58,9 @@ material owner, capture the exact root PID, aggregate RSS, process count, elapse
 time, and current CPU. When needed, inspect parentage, CWD, open files, service
 registries, or the owning control plane to establish what the tree is doing.
 
-Pass those live facts and the user's stated workload to
-`toolchain:resource-hygiene`. It owns the candidate/no-candidate result. This
-skill owns only the Mac-specific evidence and pressure interpretation.
+Apply the cleanup eligibility gates to those live facts and the user's stated
+workload. The gates own the candidate/no-candidate result; this section supplies
+only the Mac-specific evidence and pressure interpretation.
 
 Never diagnose a memory leak from one snapshot. A leak requires observing one
 PID or stable process family grow over time; many processes at one instant show
@@ -67,6 +68,6 @@ accumulation or workload pressure, not heap growth.
 
 ## Answer
 
-Return the concise Toolchain-qualified process list, or its no-candidate result.
+Return the concise gate-qualified process list, or the no-candidate result.
 Do not add other processes merely because pressure remains elevated. When useful,
 attach the current kernel level and aggregate RSS evidence to qualifying entries.
